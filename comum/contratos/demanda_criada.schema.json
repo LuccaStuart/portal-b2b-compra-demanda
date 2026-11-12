@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "demanda_criada",
+  "type": "object",
+  "required": [
+    "eventId",
+    "eventType",
+    "eventVersion",
+    "timestamp",
+    "source",
+    "correlationId",
+    "aggregateId",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "const": "demanda_criada"
+    },
+    "eventVersion": {
+      "const": "1.0"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "const": "demanda-service"
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "aggregateId": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "demandaId",
+        "compradorId",
+        "produtoId",
+        "unidade",
+        "quantidade",
+        "destino",
+        "tipo",
+        "criadoPor",
+        "criadoEm"
+      ],
+      "properties": {
+        "demandaId": {
+          "type": "string"
+        },
+        "compradorId": {
+          "type": "string"
+        },
+        "produtoId": {
+          "type": "string"
+        },
+        "unidade": {
+          "enum": [
+            "KG",
+            "TON",
+            "UN",
+            "CX",
+            "L"
+          ]
+        },
+        "quantidade": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "precoMaximo": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "destino": {
+          "type": "object",
+          "required": [
+            "cidade",
+            "uf"
+          ],
+          "properties": {
+            "cidade": {
+              "type": "string"
+            },
+            "uf": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            }
+          }
+        },
+        "prazoDesejado": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "tipo": {
+          "enum": [
+            "UNICA",
+            "RECORRENTE"
+          ]
+        },
+        "frequencia": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "criadoPor": {
+          "type": "object",
+          "required": [
+            "empresaId",
+            "usuarioId"
+          ],
+          "properties": {
+            "empresaId": {
+              "type": "string"
+            },
+            "usuarioId": {
+              "type": "string"
+            }
+          }
+        },
+        "criadoEm": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

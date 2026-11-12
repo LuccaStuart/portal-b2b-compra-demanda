@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "demanda_cancelada",
+  "type": "object",
+  "required": [
+    "eventId",
+    "eventType",
+    "eventVersion",
+    "timestamp",
+    "source",
+    "correlationId",
+    "aggregateId",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "const": "demanda_cancelada"
+    },
+    "eventVersion": {
+      "const": "1.0"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "const": "demanda-service"
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "aggregateId": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "demandaId",
+        "compradorId",
+        "canceladoEm",
+        "canceladoPor"
+      ],
+      "properties": {
+        "demandaId": {
+          "type": "string"
+        },
+        "compradorId": {
+          "type": "string"
+        },
+        "motivo": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "canceladoEm": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "canceladoPor": {
+          "type": "object",
+          "required": [
+            "empresaId",
+            "usuarioId"
+          ],
+          "properties": {
+            "empresaId": {
+              "type": "string"
+            },
+            "usuarioId": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

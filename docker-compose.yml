@@ -1,0 +1,40 @@
+# Ambiente de desenvolvimento do grupo Compra e Demanda.
+# Provisório: alinhar com o portal-b2b-kit-infra (portas, schemas, tópicos).
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    command:
+      - redpanda
+      - start
+      - --smp=1
+      - --memory=512M
+      - --overprovisioned
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:29092
+      - --advertise-kafka-addr=internal://redpanda:9092,external://localhost:${KAFKA_EXTERNAL_PORT}
+    ports:
+      - "${KAFKA_EXTERNAL_PORT}:29092"
+
+  demanda-service:
+    build: ./services/demanda-service
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redpanda:
+        condition: service_started
+    ports:
+      - "${DEMANDA_PORT}:8000"

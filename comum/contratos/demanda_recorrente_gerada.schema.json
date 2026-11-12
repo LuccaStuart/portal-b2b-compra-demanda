@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "demanda_recorrente_gerada",
+  "type": "object",
+  "required": [
+    "eventId",
+    "eventType",
+    "eventVersion",
+    "timestamp",
+    "source",
+    "correlationId",
+    "aggregateId",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "const": "demanda_recorrente_gerada"
+    },
+    "eventVersion": {
+      "const": "1.0"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "const": "demanda-service"
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "aggregateId": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "demandaId",
+        "ocorrenciaId",
+        "compradorId",
+        "produtoId",
+        "unidade",
+        "quantidade",
+        "destino",
+        "geradoEm"
+      ],
+      "properties": {
+        "demandaId": {
+          "type": "string"
+        },
+        "ocorrenciaId": {
+          "type": "string"
+        },
+        "compradorId": {
+          "type": "string"
+        },
+        "produtoId": {
+          "type": "string"
+        },
+        "unidade": {
+          "enum": [
+            "KG",
+            "TON",
+            "UN",
+            "CX",
+            "L"
+          ]
+        },
+        "quantidade": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "precoMaximo": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "destino": {
+          "type": "object",
+          "required": [
+            "cidade",
+            "uf"
+          ],
+          "properties": {
+            "cidade": {
+              "type": "string"
+            },
+            "uf": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            }
+          }
+        },
+        "prazoDesejado": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "geradoEm": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "proximaOcorrenciaEm": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
